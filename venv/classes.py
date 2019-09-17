@@ -20,6 +20,10 @@ class Usuario:
     def salvarMongoDb(self, db, coll="usuarios"):
         db[coll].save(self.getJson())
 
+    def fromJson(self,json):
+        d = dict(json)
+        for k, v in d.items():
+            setattr(self, k, v)
 
 class Evento:
     _id = None
