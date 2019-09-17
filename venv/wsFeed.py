@@ -8,7 +8,7 @@ app = appPadrao.criar_appPadrao()
 
 @app.route('/feed', methods=['GET'])
 #habilitar assim que estiver em produção
-#@login_required
+@login_required
 def feed():
     return "Feed"
 
