@@ -1,24 +1,16 @@
-"""Routes for logged-in application."""
-from flask import Blueprint, render_template
-from flask_login import current_user
-from flask import current_app as app
-from .assets import compile_auth_assets
-from flask_login import login_required
+import appPadrao
+from flask_login import UserMixin
+from classes import Usuario
+from flask import *
+from flask_login import LoginManager, login_required, login_user, logout_user
 
+app = appPadrao.criar_appPadrao()
 
-# Blueprint Configuration
-main_bp = Blueprint('main_bp', __name__,
-                    template_folder='templates',
-                    static_folder='static')
-compile_auth_assets(app)
-
-
-@main_bp.route('/feed', methods=['GET'])
-@login_required
+@app.route('/feed', methods=['GET'])
+#habilitar assim que estiver em produção
+#@login_required
 def feed():
-    """Serve logged in Dashboard."""
-    return render_template('dashboard.html',
-                           title='Flask-Login Tutorial.',
-                           template='dashboard-template',
-                           current_user=current_user,
-                           body="You are now logged in!")
+    return "Feed"
+
+if __name__ == "__main__":
+    app.run(threaded=True ,debug=True,host="0.0.0.0",port="5000")

@@ -3,17 +3,17 @@ from flask_login import UserMixin
 from classes import Usuario
 from flask import *
 from flask_login import LoginManager, login_required, login_user, logout_user
+import appConfigPython
 import os
 import utilitariosDB
 
 
-class appPadrao():
+def criar_appPadrao():
 
-    app = Flask(__name__, static_url_path='/static')
+    app = Flask(__name__, instance_relative_config=False)
 
     # config
-    app.config.
-
+    app.config.from_object("appConfigPython.Config")
     # flask-login
     login_manager = LoginManager()
     login_manager.init_app(app)
@@ -56,13 +56,11 @@ class appPadrao():
     def page_not_found(e):
         return Response('<p>Login failed</p>')
 
-
     # callback to reload the user object
     @login_manager.user_loader
     def load_user(userid):
         return User(userid)
 
 
-    if __name__ == "__main__":
+    return app
 
-    app.run(threaded=True, debug=True, host="0.0.0.0", port="5000")
