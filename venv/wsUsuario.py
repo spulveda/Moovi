@@ -1,11 +1,20 @@
+# -*- coding: utf-8 -*-
+
 import classes
 import utilitariosDB
 
 a = classes.Usuario()
-a.usuarioId = "asd"
-a.nome = "nome teste"
-a.email = "emailteste@email.com.br"
+a.nome = "nome teste3"
+a.email = "emailtesasdasdasdasdte@email.com.br"
+a.senha = "123"
 
-db = utilitariosDB.getDb(db="testes")
+#db = utilitariosDB.getDb(db="testes")
 
-a.salvarMongoDb(db)
+#a.salvarMongoDb(db)
+
+print(utilitariosDB.loginUsuario(a))
+
+#b = classes.Usuario()
+#b.fromJson({"nome":"tete2"})
+#print(b.nome)
+

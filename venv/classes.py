@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from collections import namedtuple
 import utilitariosDB
+from flask_login import UserMixin
 
-class Usuario:
+class Usuario(UserMixin):
     _id = ""
     nome = ""
     email = ""
