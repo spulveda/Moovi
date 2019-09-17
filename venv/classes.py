@@ -1,26 +1,28 @@
 from collections import namedtuple
+import utilitariosDB
 
-class Usuario(object):
-    usuarioId = None
-    nome = None
-    email = None
-    senha = None
-    token = None
-    liberado = None
-    agenda = None
-    dataCadastro = None
+class Usuario:
+    _id = ""
+    nome = ""
+    email = ""
+    senha = ""
+    token = ""
+    liberado = ""
+    agenda = ""
+    dataCadastro = ""
     
     def __init__(self):
-        pass
+       pass
 
-def iniciarUsuario(dados):
-    return namedtuple("Usuario", dados.keys())(*dados.values())
+    def getJson(self):
+        return vars(self)
 
-            
+    def salvarMongoDb(self, db, coll="usuarios"):
+        db[coll].save(self.getJson())
 
 
-class Evento(object):
-    eventoId = None
+class Evento:
+    _id = None
     titulo = None
     categoria = None
     descricao = None
@@ -34,9 +36,11 @@ class Evento(object):
     momentoFimInscricao = None
     momentoCadastro = None
 
+    def __init__(self):
+       pass
 
-class Post(object):
-    postId = None
+class Post:
+    _id = None
     titulo = None
     descricao = None
     midia = None
@@ -45,10 +49,15 @@ class Post(object):
     curtidas = None
     momento = None
 
+    def __init__(self):
+       pass
 
-class Comentarios(object):
-    comentarioId = None
+class Comentarios:
+    _id = None
     usuario = None
     post = None
     comentarioPai = None
     momento = None
+
+    def __init__(self):
+       pass
