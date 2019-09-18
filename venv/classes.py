@@ -64,6 +64,7 @@ class Post:
     comentarios = None
     curtidas = None
     momento = None
+    eventos = None
 
     def __init__(self):
        pass

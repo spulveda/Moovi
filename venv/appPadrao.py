@@ -23,8 +23,6 @@ def criar_appPadrao():
     # logica de login
     @app.route("/login", methods=["GET", "POST"])
     def login():
- #       try:
-
         if request.method == 'POST':
 
             username = request.form['inputEmail']
@@ -41,8 +39,6 @@ def criar_appPadrao():
                 return abort(401)
         else:
             return render_template('Login.html')
-#        except Exception as e:
-#            return str(e)
 
     # logout
     @app.route("/logout")

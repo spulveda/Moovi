@@ -39,5 +39,15 @@ def feed():
 
     return render_template('feed.html',postMsg=Markup(post))
 
+@app.route('/feedInsert', methods=['GET'])
+def feedInsert():
+    db = utilitariosDB.getDb()
+    eventos = db['eventos'].find()
+    event = ""
+    for ev in eventos:
+        event + event+ '< option >' +ev.titulo+ '< / option >'
+
+    return render_template("feedInsert.html", selectEventos=Markup(event))
+
 if __name__ == "__main__":
     app.run(threaded=True ,debug=True,host="0.0.0.0",port="5000")
