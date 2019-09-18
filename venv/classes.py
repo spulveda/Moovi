@@ -13,8 +13,15 @@ class Usuario(UserMixin):
     agenda = ""
     dataCadastro = ""
     
-    def __init__(self):
-       pass
+    def __init__(self,_id = "",nome = "",email = "",senha = "",token = "",liberado = "",agenda = "",dataCadastro = ""):
+        self._id = _id
+        self.nome = nome
+        self.email = email
+        self.senha = senha
+        self.token = token
+        self.liberado = liberado
+        self.agenda = agenda
+        self.dataCadastro = dataCadastro
 
     def getJson(self):
         return vars(self)
@@ -26,6 +33,9 @@ class Usuario(UserMixin):
         d = dict(json)
         for k, v in d.items():
             setattr(self, k, v)
+
+    def get_id(self):
+        return str(self._id)
 
 class Evento:
     _id = None

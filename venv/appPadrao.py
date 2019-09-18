@@ -23,26 +23,26 @@ def criar_appPadrao():
     # logica de login
     @app.route("/login", methods=["GET", "POST"])
     def login():
-        try:
+ #       try:
 
-            if request.method == 'POST':
+        if request.method == 'POST':
 
-                username = request.form['inputEmail']
-                password = request.form['inputPassword']
+            username = request.form['inputEmail']
+            password = request.form['inputPassword']
 
-                usuario = Usuario()
-                usuario.fromJson({"nome": username, "senha": password})
-                user = utilitariosDB.loginUsuario(usuario)
-
-                if not (user is None):
-                    login_user(user, remember=True)
-                    return redirect(request.args.get("next"))
-                else:
-                    return abort(401)
+            usuario = Usuario()
+            usuario.fromJson({"email": username, "senha": password})
+            user = utilitariosDB.loginUsuario(usuario)
+            if not (usuario is None):
+                user = Usuario(user)
+                login_user(user, remember=True)
+                return redirect(request.args.get("next"))
             else:
-                return render_template('Login.html')
-        except:
-            return render_template("login.html")
+                return abort(401)
+        else:
+            return render_template('Login.html')
+#        except Exception as e:
+#            return str(e)
 
     # logout
     @app.route("/logout")
@@ -58,8 +58,10 @@ def criar_appPadrao():
 
     # callback to reload the user object
     @login_manager.user_loader
-    def load_user(userid):
-        return User(userid)
+    def load_user(_id):
+        user = Usuario()
+        user._id = _id
+        return user
 
 
     return app
