@@ -21,7 +21,7 @@
 
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="onloadScroll()">
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -80,10 +80,10 @@
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="container-fluid" id="divContainerPrincipal">
 
               <!-- cards retornados por ws -->
-                {{postMsg}}
+               
           
         </div>
         <!-- /.container-fluid -->
@@ -140,13 +140,31 @@
 
   <!-- Custom scripts for all pages-->
   <script src="/static/js/sb-admin-2.min.js"></script>
+    
+  <script>
+      var itens = 0
+      
+      function onloadScroll(){
+        getOnLoadFeed();
+      }
+      
+      function updateCards(cards){        
+        document.getElementById("divContainerPrincipal").innerHTML = cards;
+          
+      }
+      
+      function getOnLoadFeed(theUrl, callback) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() { 
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                    updateCards(xmlHttp.responseText);
+            }
+            xmlHttp.open("GET", "/feedLoad?item="+itens, true); // true for asynchronous 
+            xmlHttp.send(itens);
+            itens += 1;
+        }
 
-  <!-- Page level plugins -->
-  <script src="/static/vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="/static/js/demo/chart-area-demo.js"></script>
-  <script src="/static/js/demo/chart-pie-demo.js"></script>
+  </script>
 
 </body>
 
