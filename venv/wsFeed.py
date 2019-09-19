@@ -1,9 +1,10 @@
 import appPadrao
 from flask_login import UserMixin
-from classes import Usuario
+from classes import Usuario,Post
 from flask import *
 from flask_login import LoginManager, login_required, login_user, logout_user
 import utilitariosDB
+from datetime import datetime
 
 app = appPadrao.criar_appPadrao()
 
@@ -15,10 +16,11 @@ def feed():
     posts = db['post'].find().limit(10)
     post = ''
     for i in posts:
-        titulo = i['titulo']
-        midia = i['midia']
-        midiaTipo = i['midiaTipo']
-        descricao = i['descricao']
+
+        titulo = i.get('titulo', '')
+        midia = i.get('midia','')
+        midiaTipo = i.get('midiaTipo','')
+        descricao = i.get('descricao','')
 
         pt = ('<div class="card shadow mb-4">'
                     '<div class="card-header py-3">'
@@ -39,15 +41,24 @@ def feed():
 
     return render_template('feed.html',postMsg=Markup(post))
 
-@app.route('/feedInsert', methods=['GET'])
+@app.route('/feedInsert', methods=['GET', 'POST'])
 def feedInsert():
-    db = utilitariosDB.getDb()
-    eventos = db['eventos'].find()
-    event = ""
-    for ev in eventos:
-        event + event+ '< option >' +ev.titulo+ '< / option >'
+    if request.method == 'POST':
 
-    return render_template("feedInsert.html", selectEventos=Markup(event))
+        post = Post()
+        post.titulo = request.form.get("feedInTitulo",'')
+        post.descricao = request.form.get("feedInMensagem",)
+        post.midiaTipo = "imgB64"
+        post.midia = request.form.get("fileBase64",)
+        post.momento = datetime.now()
+
+        # Salvando no banco
+        db = utilitariosDB.getDb()
+        post.salvarMongoDb(db)
+
+        return redirect("feed.html")
+    else:
+        return render_template("feedInsert.html")
 
 if __name__ == "__main__":
     app.run(threaded=True ,debug=True,host="0.0.0.0",port="5000")

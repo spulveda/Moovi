@@ -82,29 +82,24 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-            <form class="user">
+            <form class="user" method="post" >
                 <div class="form-group">
-                    <input type="text" class="form-control form-control-user" id="feedInTitulo" placeholder="Titulo">
+                    <input type="text" class="form-control form-control-user" name="feedInTitulo" id="feedInTitulo" placeholder="Titulo" required>
                 </div>
                 
                 <div class="form-group">                    
-                    <textarea class="form-control" id="feedInMensagem" rows="3" placeholder="Mensagem"></textarea>
+                    <textarea class="form-control" name="feedInMensagem" id="feedInMensagem" rows="3" placeholder="Mensagem" required></textarea>
                 </div>              
-                
-                <div class="form-group">                    
-                    <select class="form-control" id="exampleFormControlSelect1" placeholder="Evento">                      
-                      {{selectEvento}}
-                    </select>
-                </div>
-                
+
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input form-control form-control-user  " id="customFile">
+                    <input type="file" name="customFile" onchange="encodeImageFileAsURL(this)" class="custom-file-input form-control form-control-user  " id="customFile">
                     <label class="custom-file-label" for="customFile">Inserir Imagem</label>
-                </div>
-                                    
-                <a href="login.html" class="btn btn-primary btn-user btn-block">
+                    <input type="hidden" id="fileBase64" name="fileBase64" value="">
+                </div>                                               
+                
+                <button type="submit" class="btn btn-primary btn-user btn-block">
                   Post
-                </a>
+                </button>
                 <hr>                
                 
               </form>
@@ -165,19 +160,24 @@
   <!-- Custom scripts for all pages-->
   <script src="/static/js/sb-admin-2.min.js"></script>
 
-  <!-- Page level plugins -->
-  <script src="/static/vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="/static/js/demo/chart-area-demo.js"></script>
-  <script src="/static/js/demo/chart-pie-demo.js"></script>
-
     <script>
-    // Add the following code if you want the name of the file appear on select
-    $(".custom-file-input").on("change", function() {
-      var fileName = $(this).val().split("\\").pop();
-      $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-    });
+        <!-- Mostrar o nome do arquivo no input -->
+        $(".custom-file-input").on("change", function() {
+          var fileName = $(this).val().split("\\").pop();
+          $(this).siblings(".custom-file-label").addClass("selected").html(fileName);         
+        });
+        
+        <!-- Converter o arquivo para base64 -->
+        function encodeImageFileAsURL(element) {
+          var file = element.files[0];
+          var reader = new FileReader();
+          reader.onloadend = function() {   
+            document.getElementById("fileBase64").value = reader.result
+            console.log('RESULT', reader.result)
+          }
+          reader.readAsDataURL(file);
+        }
+        
     </script>    
     
 </body>
