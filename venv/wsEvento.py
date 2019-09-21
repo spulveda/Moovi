@@ -136,15 +136,16 @@ def postInscreverse():
             if (momentoFimInscricao == None) or (momentoFimInscricao.date() >= datetime.now().date()):
                 inscritos.remove(usuario)
                 evento["usuariosInscritos"] = inscritos
+                evento["inscricoes"] = evento["inscricoes"] - 1
                 db['evento'].save(evento)
             else:
                 return 'fimDasInscriçoes', 876
 
         else:
             if (momentoFimInscricao == None) or (momentoFimInscricao.date() >= datetime.now().date()):
-                evento.get('momentoFimInscricao', '')
                 inscritos.append(usuario)
                 evento["usuariosInscritos"] = inscritos
+                evento["inscricoes"] = evento["inscricoes"]+1
                 db['evento'].save(evento)
             else:
                 return 'fimDasInscriçoes', 876
