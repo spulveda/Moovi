@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Moovi Post</title>
+  <title>Moovi Evento</title>
 
   <!-- Custom fonts for this template-->
   <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -21,7 +21,7 @@
 
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="onloadScroll()">
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -80,29 +80,10 @@
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="container-fluid" id="divContainerPrincipal">
 
-            <form class="user" method="post" >
-                <div class="form-group">
-                    <input type="text" class="form-control form-control-user" name="feedInTitulo" id="feedInTitulo" placeholder="Titulo" required>
-                </div>
-                
-                <div class="form-group">                    
-                    <textarea class="form-control" name="feedInMensagem" id="feedInMensagem" rows="3" placeholder="Mensagem" required></textarea>
-                </div>              
-
-                <div class="custom-file">
-                    <input type="file" name="customFile" onchange="encodeImageFileAsURL(this)" class="custom-file-input form-control form-control-user  " id="customFile">
-                    <label class="custom-file-label" id="labelImagem" for="customFile">Inserir Imagem</label>
-                    <input type="hidden" id="fileBase64" name="fileBase64" value="">
-                </div>                                               
-                
-                <button type="submit" class="btn btn-primary btn-user btn-block">
-                  Post
-                </button>
-                <hr>                
-                
-              </form>
+              <!-- cards retornados por ws -->
+               
           
         </div>
         <!-- /.container-fluid -->
@@ -159,25 +140,6 @@
 
   <!-- Custom scripts for all pages-->
   <script src="/static/js/sb-admin-2.min.js"></script>
-
-    <script>
-        <!-- Mostrar o nome do arquivo no input -->
-        $(".custom-file-input").on("change", function() {
-          var fileName = $(this).val().split("\\").pop();
-          $(this).siblings(".custom-file-label").addClass("selected").html(fileName);         
-        });
-        
-        <!-- Converter o arquivo para base64 -->
-        function encodeImageFileAsURL(element) {
-          var file = element.files[0];
-          var reader = new FileReader();
-          reader.onloadend = function() {   
-            document.getElementById("fileBase64").value = reader.result            
-          }
-          
-        }
-        
-    </script>    
     
 </body>
 

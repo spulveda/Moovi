@@ -12,6 +12,10 @@ def criar_appPadrao():
 
     app = Flask(__name__, instance_relative_config=False)
 
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = 'users.login'
+
     # config
     app.config.from_object("appConfigPython.Config")
     # flask-login

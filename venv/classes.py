@@ -12,8 +12,9 @@ class Usuario(UserMixin):
     liberado = ""
     agenda = ""
     dataCadastro = ""
+    imagem = ""
     
-    def __init__(self,_id = "",nome = "",email = "",senha = "",token = "",liberado = "",agenda = "",dataCadastro = ""):
+    def __init__(self,_id = "",nome = "",email = "",senha = "",token = "",liberado = "",agenda = "",dataCadastro = "", imagem = ""):
         self._id = _id
         self.nome = nome
         self.email = email
@@ -22,6 +23,7 @@ class Usuario(UserMixin):
         self.liberado = liberado
         self.agenda = agenda
         self.dataCadastro = dataCadastro
+        self.imagem = imagem
 
     def getJson(self):
         return vars(self)
@@ -86,8 +88,19 @@ class Comentarios:
     _id = None
     usuario = None
     post = None
-    comentarioPai = None
+    comentario = None
     momento = None
 
     def __init__(self):
        pass
+
+    def getJson(self):
+        return vars(self)
+
+    def salvarMongoDb(self, db, coll="comentarios"):
+        db[coll].save(self.getJson())
+
+    def fromJson(self,json):
+        d = dict(json)
+        for k, v in d.items():
+            setattr(self, k, v)

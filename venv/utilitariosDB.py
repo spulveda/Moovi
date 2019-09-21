@@ -17,6 +17,9 @@ def loginUsuario(usuario):
     qr['email'] = usuario.email
     qr['senha'] = usuario.senha
     usuario = db['usuarios'].find_one(qr)
-    return usuario
+    if (usuario == None):
+        return None
+    else:
+        return str(usuario.get("_id"))
 
 
