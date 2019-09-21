@@ -23,7 +23,7 @@ def evento():
 def getEvento():
 
     db = utilitariosDB.getDb()
-    eventos = db['evento'].find({"concluido":"N"}).sort([("momentoCadastro", pymongo.DESCENDING)])
+    eventos = db['evento'].find({"concluido":"N","publicado":"S"}).sort([("momentoCadastro", pymongo.DESCENDING)])
 
     usuarioAtivo = current_user.get_id()
 
@@ -47,7 +47,7 @@ def getEvento():
 
         descricao = "<br />".join(descricao.split("\n"))
 
-        evento += ('<div class="card shadow mb-4">'
+        evento += ('<div class="card shadow-lg mb-4">'
                 '<div class="card-header py-3">'
                   '<h6 class="m-0 font-weight-bold text-primary text-center">'+titulo+'</h6>'
                 '</div>'
@@ -133,7 +133,7 @@ def postInscreverse():
 
         inscritos = list(inscritos)
         if usuario in inscritos:
-            if (momentoFimInscricao == None) or (momentoFimInscricao.date() >= datetime.now().date()):
+            if (momentoFimInscricao == None) or (momentoFimInscricao >= datetime.now()):
                 inscritos.remove(usuario)
                 evento["usuariosInscritos"] = inscritos
                 evento["inscricoes"] = evento["inscricoes"] - 1
@@ -142,7 +142,7 @@ def postInscreverse():
                 return 'fimDasInscriçoes', 876
 
         else:
-            if (momentoFimInscricao == None) or (momentoFimInscricao.date() >= datetime.now().date()):
+            if (momentoFimInscricao == None) or (momentoFimInscricao >= datetime.now()):
                 inscritos.append(usuario)
                 evento["usuariosInscritos"] = inscritos
                 evento["inscricoes"] = evento["inscricoes"]+1
