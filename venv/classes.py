@@ -44,6 +44,7 @@ class Evento:
     titulo = None
     categoria = None
     descricao = None
+    imagem = None
     momentoExecucao = None
     local = None
     pontos = None
@@ -53,9 +54,21 @@ class Evento:
     publicado = None
     momentoFimInscricao = None
     momentoCadastro = None
+    concluido = None
 
     def __init__(self):
        pass
+
+    def getJson(self):
+        return vars(self)
+
+    def salvarMongoDb(self, db, coll="evento"):
+        db[coll].save(self.getJson())
+
+    def fromJson(self,json):
+        d = dict(json)
+        for k, v in d.items():
+            setattr(self, k, v)
 
 class Post:
     _id = None
@@ -81,8 +94,6 @@ class Post:
         d = dict(json)
         for k, v in d.items():
             setattr(self, k, v)
-
-
 
 class Comentarios:
     _id = None

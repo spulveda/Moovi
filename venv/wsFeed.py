@@ -13,53 +13,52 @@ app = appPadrao.criar_appPadrao()
 @app.route('/feedLoad', methods=['GET'])
 @login_required
 def feedLoad():
-    if request.method == 'GET':
-        nItens = request.args.get('item',0)
+    nItens = request.args.get('item',0)
 
-        if nItens == 0:
-            db = utilitariosDB.getDb()
-            posts = db['post'].find().limit(10).sort([("momento", pymongo.DESCENDING)])
+    if nItens == 0:
+        db = utilitariosDB.getDb()
+        posts = db['post'].find().limit(10).sort([("momento", pymongo.DESCENDING)])
 
-        else:
-            db = utilitariosDB.getDb()
-            posts = db['post'].find().limit(int(nItens)*10).sort([("momento", pymongo.DESCENDING)])
+    else:
+        db = utilitariosDB.getDb()
+        posts = db['post'].find().limit(int(nItens)*10).sort([("momento", pymongo.DESCENDING)])
 
-        post = ''
-        for i in posts:
-            titulo = i.get('titulo', '')
-            midia = i.get('midia','')
-            midiaTipo = i.get('midiaTipo','')
-            descricao = i.get('descricao','')
-            postId = i.get('_id','')
+    post = ''
+    for i in posts:
+        titulo = i.get('titulo', '')
+        midia = i.get('midia','')
+        midiaTipo = i.get('midiaTipo','')
+        descricao = i.get('descricao','')
+        postId = i.get('_id','')
 
-            descricao = "<br />".join(descricao.split("\n"))
+        descricao = "<br />".join(descricao.split("\n"))
 
-            pt = ('<div class="card shadow mb-4">'
-                        '<div class="card-header py-3">'
-                          '<h6 class="m-0 font-weight-bold text-primary">'+titulo+'</h6>'
-                        '</div>'
-                        '<div class="card-body">')
+        pt = ('<div class="card shadow mb-4">'
+                    '<div class="card-header py-3">'
+                      '<h6 class="m-0 font-weight-bold text-primary">'+titulo+'</h6>'
+                    '</div>'
+                    '<div class="card-body">')
 
-            if (midiaTipo == "imgB64") and (midia != ""):
-                pt = pt+('<div class="text-center">'
-                            '<img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="'+midia+'" alt="">'
-                          '</div>')
+        if (midiaTipo == "imgB64") and (midia != ""):
+            pt = pt+('<div class="text-center">'
+                        '<img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="'+midia+'" alt="">'
+                      '</div>')
 
-            pt = pt+('<p>'+descricao+'</p>'                      
-                        '</div>'
-                       '<div  >'
-                      '<i id="'+str(postId)+'" class="fas fa-comments fa-2x text-gray-300 float-right mb-2 col-md-auto" onclick="getloadComentario(this)" ></i>'
-                    '</div>'    
-                                            
-                        '<div class="card-footer" id="postFooter'+str(postId)+'">'
-                          '<small class="text-muted">Comentarios...</small>'
-                        '</div>'
-    
-                      '</div>' )
+        pt = pt+('<p>'+descricao+'</p>'                      
+                    '</div>'
+                   '<div  >'
+                  '<i id="'+str(postId)+'" class="fas fa-comments fa-2x text-gray-300 float-right mb-2 col-md-auto" onclick="getloadComentario(this)" ></i>'
+                '</div>'    
+                                        
+                    '<div class="card-footer" id="postFooter'+str(postId)+'">'
+                      '<small class="text-muted">Comentarios...</small>'
+                    '</div>'
 
-            post = post+pt
+                  '</div>' )
 
-        return Markup(post)
+        post = post+pt
+
+    return Markup(post)
 
 @app.route('/feed', methods=['GET'])
 @login_required

@@ -140,6 +140,46 @@
 
   <!-- Custom scripts for all pages-->
   <script src="/static/js/sb-admin-2.min.js"></script>
+
+    <script>
+        
+      function onloadScroll(){
+        getOnLoadEventos();
+      };
+      
+      function updateCards(cards){        
+        document.getElementById("divContainerPrincipal").innerHTML = cards;
+          
+      };
+      
+      function getOnLoadEventos() {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() { 
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                    updateCards(xmlHttp.responseText);                
+            }
+            xmlHttp.open("GET", "/getEvento", true); // true for asynchronous 
+            xmlHttp.send();            
+      };
+    
+        function postInscreverse(ele){
+            var xmlHttp = new XMLHttpRequest();
+            var eventoId = ele.id;                        
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                    getOnLoadEventos();
+                }else{
+                 if (xmlHttp.readyState == 4 && xmlHttp.status == 876)
+                    alert("Inscrições finalizadas.");   
+                }                                    
+            }
+            xmlHttp.open("POST", "/postInscreverse", true);                        
+            xmlHttp.send(JSON.stringify({"eventoId":eventoId}));
+        };
+        
+        
+        
+    </script>
     
 </body>
 
