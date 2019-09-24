@@ -35,7 +35,7 @@ def feedLoad():
 
         pt = ('<div class="card shadow mb-4">'
                     '<div class="card-header py-3">'
-                      '<h6 class="m-0 font-weight-bold text-primary">'+titulo+'</h6>'
+                      '<h6 class="m-0 font-weight-bold text-primary text-center">'+titulo+'</h6>'
                     '</div>'
                     '<div class="card-body">')
 
@@ -47,7 +47,7 @@ def feedLoad():
         pt = pt+('<p>'+descricao+'</p>'                      
                     '</div>'
                    '<div  >'
-                  '<i id="'+str(postId)+'" class="fas fa-comments fa-2x text-gray-300 float-right mb-2 col-md-auto" onclick="getloadComentario(this)" ></i>'
+                  '<i id="'+str(postId)+'" class="fas fa-comments fa-2x text-gray-300 float-right mb-2 col-md-auto" onclick="getloadComentario(this)" style="color: f6c23e!important" ></i>'
                 '</div>'    
                                         
                     '<div class="card-footer" id="postFooter'+str(postId)+'">'

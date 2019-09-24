@@ -18,10 +18,11 @@
   <!-- Custom styles for this template-->
   <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
     
+  <link rel="stylesheet" type="text/css" href="/static/datetimepicker/jquery.datetimepicker.min.css"/>    
 
 </head>
 
-<body id="page-top" onload="onloadScroll()">
+<body id="page-top" onload="getNavBar()">
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -33,58 +34,50 @@
       <!-- Main Content -->
       <div id="content">
 
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-          <a class="navbar-brand" href="/">MOOVI <sup>CNS</sup></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <!-- Topbar Navbar -->
-          <ul class="navbar-nav ml-auto">
-            
-            
-            <div class="topbar-divider d-none d-sm-block"></div>
-
-            <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
-              </a>
-              <!-- Dropdown - User Information -->
-              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Logout
-                </a>
-              </div>
-            </li>
-
-          </ul>
-
-        </nav>
-        <!-- End of Topbar -->
-
+        
         <!-- Begin Page Content -->
         <div class="container-fluid" id="divContainerPrincipal">
 
               <!-- cards retornados por ws -->
-               
-          
+            <div class="card shadow-lg">
+                <div class="card-header">
+                  <p class="text-center mb-0">Cadastro de Evento</p>
+                </div>
+                <div class="card-body">
+                    <form method="post" >
+                      <div class="form-group">
+                          <input type="text" class="form-control mb-2" id="tTitulo" name="tTitulo" placeholder="Titulo..." required> 
+                          <input type="text" class="form-control mb-2" id="tLocal" name="tLocal" placeholder="Local..." >
+                          <input type="text" class="form-control mb-2" id="tPontos" name="tPontos" placeholder="Número de pontos..." required>
+                          <input type="text" class="form-control mb-2" id="tVagas" name="tVagas" placeholder="Número de vagas..." required>
+                          <input type="text" class="form-control mb-2 datetimepicker" id="tDataEvento" name="tDataEvento" placeholder="Data de realização do evento..." required>
+                          <input type="text" class="form-control mb-2 datetimepicker" id="tDataFimInscricao" name="tDataFimInscricao" placeholder="Fim das inscrições..." required>
+
+                            <div class="custom-file">
+                                <input type="file" name="customFile" class="custom-file-input form-control form-control-user  " id="customFile" accept='image/*'>
+                                <label class="custom-file-label" id="labelImagem" for="customFile">Inserir Imagem</label>
+                                <input type="hidden" id="fileBase64" name="fileBase64" value="" >
+                            </div>                                     
+                      </div>
+                      <div class="form-group">
+                        <textarea class="form-control" id="tDescricao" name="tDescricao" rows="3" placeholder="Descrição..." required></textarea>
+                        <br>  
+                        <label for="selCategoria">Categoria</label>
+                        <select class="form-control" id="selCategoria" name="selCategoria" required>
+                          <option>#Compartilha</option>
+                          <option>#Participa</option>
+                          <option>#Ação social</option>                                  
+                        </select>
+                      </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+                        </div>
+
+                    </form>                            
+            
+                </div>
+              </div>
+                    
         </div>
         <!-- /.container-fluid -->
 
@@ -140,44 +133,60 @@
 
   <!-- Custom scripts for all pages-->
   <script src="/static/js/sb-admin-2.min.js"></script>
+    
+  <!-- Time Picker -->
+    <script src="/static/datetimepicker/jquery.datetimepicker.min.js"></script>
+    <script src="/static/datetimepicker/jquery.datetimepicker.full.min.js"></script>
+    <script src="/static/datetimepicker/jquery.datetimepicker.full.js"></script>
+    
 
     <script>
         
-      function onloadScroll(){
-        getOnLoadEventos();
+        $('.datetimepicker').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'pt',
+        disabledDates:['1986/01/08','1986/01/09','1986/01/10'],
+        startDate:	'2019/09/20'
+        });
+
+
+        <!-- Mostrar o nome do arquivo no input -->
+        $(".custom-file-input").on("change", function() {
+          var fileName = $(this).val().split("\\").pop();
+          $(this).siblings(".custom-file-label").addClass("selected").html(fileName);         
+        }); 
+        
+    // convertendo imagem para base64
+    var input = document.querySelector('input[type=file]');
+        
+    input.onchange = function () {
+      var file = input.files[0],
+        reader = new FileReader();
+
+      reader.onloadend = function () {        
+        var b64 = reader.result;
+        document.getElementById('fileBase64').value =b64;
       };
-      
-      function updateCards(cards){        
-        document.getElementById("divContainerPrincipal").innerHTML = cards;
+
+      reader.readAsDataURL(file);
+    };        
+        
+        
+        
+        function updateNavBar(nav){        
+            document.getElementById("content").insertAdjacentHTML("afterbegin",nav);
           
-      };
-      
-      function getOnLoadEventos() {
+        };      
+        
+        function getNavBar() {
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.onreadystatechange = function() { 
                 if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-                    updateCards(xmlHttp.responseText);                
+                    updateNavBar(xmlHttp.responseText);                
             }
-            xmlHttp.open("GET", "/getEvento", true); // true for asynchronous 
+            xmlHttp.open("GET", "/getNavBar", true); // true for asynchronous 
             xmlHttp.send();            
-      };
-    
-        function postInscreverse(ele){
-            var xmlHttp = new XMLHttpRequest();
-            var eventoId = ele.id;                        
-            xmlHttp.onreadystatechange = function() {
-                if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
-                    getOnLoadEventos();
-                }else{
-                 if (xmlHttp.readyState == 4 && xmlHttp.status == 876)
-                    alert("Inscrições finalizadas.");   
-                }                                    
-            }
-            xmlHttp.open("POST", "/postInscreverse", true);                        
-            xmlHttp.send(JSON.stringify({"eventoId":eventoId}));
         };
-        
-        
         
     </script>
     

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from classes import Usuario
 from flask import *
 from flask_login import LoginManager, login_required, login_user, logout_user
 import appConfigPython
 import os
 import utilitariosDB
-
+from bson.objectid import ObjectId
 
 def criar_appPadrao():
 
@@ -49,7 +49,7 @@ def criar_appPadrao():
     @login_required
     def logout():
         logout_user()
-        return Response('<p>Logged out</p>')
+        return redirect("/feed")
 
     # se der erro no login podemos fazer assim
     @app.errorhandler(401)
@@ -62,6 +62,42 @@ def criar_appPadrao():
         user = Usuario()
         user._id = _id
         return user
+
+    @app.route("/getNavBar", methods=["GET"])
+    @login_required
+    def getNavBar():
+
+        usuarioAtivo = current_user.get_id()
+        db = utilitariosDB.getDb()
+        usuario = db['usuarios'].find_one({"_id": ObjectId(usuarioAtivo)})
+
+        usuario.get('imagem',"")
+
+        nav = ""
+
+        nav = ('<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">'
+                  '<a class="navbar-brand" href="/feed">MOOVI <sup>CNS</sup></a>'                    
+                  '<ul class="navbar-nav ml-auto">'                        
+                    '<div class="topbar-divider d-none d-sm-block"></div>'
+                    
+                    '<li class="nav-item dropdown no-arrow">'
+                      '<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+                        '<span class="mr-2 d-lg-inline text-gray-600 small">'+usuario.get('nome',"")+'</span>'
+                        '<img class="img-profile rounded-circle" src="'+usuario.get('imagem',"")+'">'
+                      '</a>'
+                      
+                      '<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">'                
+                        '<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">'
+                          '<i class="fas fa-sign-out-alt fa-sm fa-fw mr-0 text-gray-400"></i>'
+                          'Logout'
+                        '</a>'
+                      '</div>'
+                    '</li>'
+                  '</ul>'
+                '</nav>')
+
+
+        return Markup(nav)
 
 
     return app

@@ -21,7 +21,7 @@
 
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="getNavBar()">
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -31,53 +31,9 @@
     <div id="content-wrapper" class="d-flex flex-column">
 
       <!-- Main Content -->
-      <div id="content">
+      <div id="content" style="backgroud: 8f09e21c">
 
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-          <a class="navbar-brand" href="/">MOOVI <sup>CNS</sup></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <!-- Topbar Navbar -->
-          <ul class="navbar-nav ml-auto">
-            
-            
-            <div class="topbar-divider d-none d-sm-block"></div>
-
-            <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
-              </a>
-              <!-- Dropdown - User Information -->
-              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Logout
-                </a>
-              </div>
-            </li>
-
-          </ul>
-
-        </nav>
-        <!-- End of Topbar -->
+        
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -92,7 +48,7 @@
                 </div>              
 
                 <div class="custom-file">
-                    <input type="file" name="customFile" onchange="encodeImageFileAsURL(this)" class="custom-file-input form-control form-control-user  " id="customFile">
+                    <input type="file" name="customFile" class="custom-file-input form-control form-control-user  " id="customFile" accept='image/*'>
                     <label class="custom-file-label" id="labelImagem" for="customFile">Inserir Imagem</label>
                     <input type="hidden" id="fileBase64" name="fileBase64" value="">
                 </div>                                               
@@ -167,15 +123,37 @@
           $(this).siblings(".custom-file-label").addClass("selected").html(fileName);         
         });
         
-        <!-- Converter o arquivo para base64 -->
-        function encodeImageFileAsURL(element) {
-          var file = element.files[0];
-          var reader = new FileReader();
-          reader.onloadend = function() {   
-            document.getElementById("fileBase64").value = reader.result            
-          }
+        
+    // convertendo imagem para base64
+    var input = document.querySelector('input[type=file]');
+        
+    input.onchange = function () {
+      var file = input.files[0],
+        reader = new FileReader();
+
+      reader.onloadend = function () {        
+        var b64 = reader.result;
+        document.getElementById('fileBase64').value =b64;
+      };
+
+      reader.readAsDataURL(file);
+    };        
+        
+        
+        function updateNavBar(nav){        
+            document.getElementById("content").insertAdjacentHTML("afterbegin",nav);
           
-        }
+        };      
+        
+        function getNavBar() {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() { 
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                    updateNavBar(xmlHttp.responseText);                
+            }
+            xmlHttp.open("GET", "/getNavBar", true); // true for asynchronous 
+            xmlHttp.send();            
+        };
         
     </script>    
     

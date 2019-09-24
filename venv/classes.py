@@ -13,8 +13,9 @@ class Usuario(UserMixin):
     agenda = ""
     dataCadastro = ""
     imagem = ""
+    administrador = ""
     
-    def __init__(self,_id = "",nome = "",email = "",senha = "",token = "",liberado = "",agenda = "",dataCadastro = "", imagem = ""):
+    def __init__(self,_id = "",nome = "",email = "",senha = "",token = "",liberado = "",agenda = "",dataCadastro = "", imagem = "", administrador = ""):
         self._id = _id
         self.nome = nome
         self.email = email
@@ -24,6 +25,7 @@ class Usuario(UserMixin):
         self.agenda = agenda
         self.dataCadastro = dataCadastro
         self.imagem = imagem
+        self.administrador = administrador
 
     def getJson(self):
         return vars(self)
