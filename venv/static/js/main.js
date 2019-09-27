@@ -1,3 +1,5 @@
+ var activePage
+
  <!-- Inicio principal -->
 function onloadScroll(local){
         getNavBar();
@@ -27,6 +29,7 @@ function onloadScroll(local){
  <!-- Inicio evento -->
       function getOnLoadEventos() {
             var xmlHttp = new XMLHttpRequest();
+            activePage = "EVENTO"
             xmlHttp.onreadystatechange = function() { 
                 if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                     updateCards(xmlHttp.responseText);                
@@ -79,6 +82,7 @@ function onloadScroll(local){
  <!-- Inicio agenda -->
       function getOnLoadAgenda() {
             var xmlHttp = new XMLHttpRequest();
+            activePage = "AGENDA"
             xmlHttp.onreadystatechange = function() { 
                 if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                     updateCards(xmlHttp.responseText);                
@@ -92,6 +96,7 @@ var itens = 0
 
         function getOnLoadFeed() {
             var xmlHttp = new XMLHttpRequest();
+            activePage = "FEED"
             xmlHttp.onreadystatechange = function() { 
                 if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                     updateCards(xmlHttp.responseText);
@@ -153,6 +158,8 @@ var itens = 0
       
         window.onscroll = function(ev) {
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-                getOnLoadFeed();
+                if (activePage == "FEED") {
+                    getOnLoadFeed();
+                }
             }
         };
