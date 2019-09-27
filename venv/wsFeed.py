@@ -66,6 +66,7 @@ def feed():
       return render_template('feed.html')
 
 @app.route('/feedInsert', methods=['GET', 'POST'])
+@login_required
 def feedInsert():
     if request.method == 'POST':
 
@@ -86,6 +87,7 @@ def feedInsert():
 
 
 @app.route('/getComentarios', methods=['GET'])
+@login_required
 def getComentario():
     if request.method == 'GET':
         post = request.args.get('postId')
@@ -142,6 +144,7 @@ def getComentario():
 
 
 @app.route('/postComentarios', methods=['POST'])
+@login_required
 def postComentario():
     cont = json.loads(request.data.decode('utf-8'))
     post = cont.get('post','')

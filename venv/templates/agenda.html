@@ -142,7 +142,7 @@
                 if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                     updateCards(xmlHttp.responseText);                
             }
-            xmlHttp.open("GET", "/getEvento", true); // true for asynchronous 
+            xmlHttp.open("GET", "/getAgenda", true); // true for asynchronous 
             xmlHttp.send();            
       };
     
@@ -159,34 +159,7 @@
             }
             xmlHttp.open("POST", "/postInscreverse", true);                        
             xmlHttp.send(JSON.stringify({"eventoId":eventoId}));
-        };
-        
-        function publicar(ele){
-            var xmlHttp = new XMLHttpRequest();
-            var eventoId = ele.id;                        
-            xmlHttp.onreadystatechange = function() {
-                if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
-                    getOnLoadEventos();
-                }
-            }
-            xmlHttp.open("POST", "/postPublicar", true);                        
-            xmlHttp.send(JSON.stringify({"eventoId":eventoId}));
-            
-        }
-        
-        function concluir(ele){
-            var xmlHttp = new XMLHttpRequest();
-            var eventoId = ele.id;                        
-            xmlHttp.onreadystatechange = function() {
-                if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
-                    getOnLoadEventos();
-                }
-            }
-            xmlHttp.open("POST", "/postConcluir", true);                        
-            xmlHttp.send(JSON.stringify({"eventoId":eventoId}));
-            
-        }
-        
+        };                
         
     </script>
     

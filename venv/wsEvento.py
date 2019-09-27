@@ -205,7 +205,7 @@ def cadastrarEvento():
         db = utilitariosDB.getDb()
         evento.salvarMongoDb(db)
 
-        return redirect("/evento")
+        return 'ok', 200
 
 @app.route("/postConcluir", methods=["POST"])
 @login_required
@@ -225,7 +225,7 @@ def postConcluir():
         evento["concluido"] = "N"
         db['evento'].save(evento)
 
-    return redirect("/evento")
+    return 'ok', 200
 
 
 @app.route("/postPublicar", methods=["POST"])
@@ -246,7 +246,7 @@ def postPublicar():
         evento["publicado"] = "N"
         db['evento'].save(evento)
 
-    return redirect("/evento")
+    return 'ok', 200
 
 
 if __name__ == "__main__":

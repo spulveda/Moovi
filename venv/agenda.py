@@ -18,9 +18,9 @@ def evento():
     return render_template('agenda.html')
 
 
-@app.route('/getEvento', methods=['GET'])
+@app.route('/getAgenda', methods=['GET'])
 @login_required
-def getEvento():
+def getAgenda():
     usuarioAtivo = current_user.get_id()
 
     db = utilitariosDB.getDb()
@@ -46,7 +46,7 @@ def getEvento():
 
         descricao = "<br />".join(descricao.split("\n"))
 
-        evento += ('<div data-toggle="modal" data-target="#eventoModal" class="col-xl-3 col-md-6 mb-4">'
+        evento += ('<div data-toggle="modal" data-target="#eventoModal'+str(eventoId)+'" class="col-xl-3 col-md-6 mb-4">'
               '<div class="card border-left-primary shadow h-100 py-2">'
                 '<div class="card-body">'
                   '<div class="row no-gutters align-items-center">'
@@ -62,85 +62,85 @@ def getEvento():
               '</div>'
             '</div>')
 
-    evento += ('<div class="modal fade" id="eventoModal" tabindex="-1" role="dialog"  >'
-                 '<div class="modal-dialog" role="document">'
-                   '<div class="modal-content">')
+        evento += ('<div class="modal fade" id="eventoModal'+str(eventoId)+'" tabindex="-1" role="dialog"  >'
+                     '<div class="modal-dialog" role="document">'
+                       '<div class="modal-content">')
 
-    evento += ('<div class="card shadow-lg mb-4">'
-               '<div class="card-header py-3">'
-               '<h6 class="m-0 font-weight-bold text-primary text-center">' + titulo + '</h6>')
+        evento += ('<div class="card shadow-lg mb-4">'
+                   '<div class="card-header py-3">'
+                   '<h6 class="m-0 font-weight-bold text-primary text-center">' + titulo + '</h6>')
 
-    evento += ('</div>'
-               '<div class="card-body pb-2 mb-1">')
-    if (imagem > ''):
-        evento += ('<div class="text-center ">'
-                   '<img class="img-fluid px-3 px-sm-4 mt-3 mb-4 " style="width: 25rem;" src="' + imagem + '" alt="">'
-                                                                                                           '</div>')
+        evento += ('</div>'
+                   '<div class="card-body pb-2 mb-1">')
+        if (imagem > ''):
+            evento += ('<div class="text-center ">'
+                       '<img class="img-fluid px-3 px-sm-4 mt-3 mb-4 " style="width: 25rem;" src="' + imagem + '" alt="">'
+                                                                                                               '</div>')
 
-    evento += ('<div class="card py-3 border-bottom-primary">'
-               '<div class="card-body pb-0 pt-0">'
-               '<p class="mb-0 pb-0 mt-0">' + descricao + '</p>'
-                                                          '</div>'
-                                                          '</div>'
-                                                          '</div>'
-                                                          '<div class="card-footer pb-0 pt-3 mt-0 text-center">'
-
-                                                          '<div class="btn-group mb-0" role="group">'
-                                                          '<p  class="btn btn-success btn-icon-split">'
-                                                          '<span class="icon text-white-50">'
-               + str(pontos) +
-               '</span>'
-               '<span class="text">Pontos</span>'
-               '</p>')
-
-    if (vagas > 0):
-        evento += ('<p  class="btn btn-warning btn-icon-split ml-1">'
-                   '<span class="icon text-white-50">'
-                   + str(vagas - inscricoes) +
+        evento += ('<div class="card py-3 border-bottom-primary">'
+                   '<div class="card-body pb-0 pt-0">'
+                   '<p class="mb-0 pb-0 mt-0">' + descricao + '</p>'
+                                                              '</div>'
+                                                              '</div>'
+                                                              '</div>'
+                                                              '<div class="card-footer pb-0 pt-3 mt-0 text-center">'
+    
+                                                              '<div class="btn-group mb-0" role="group">'
+                                                              '<p  class="btn btn-success btn-icon-split">'
+                                                              '<span class="icon text-white-50">'
+                   + str(pontos) +
                    '</span>'
-                   '<span class="text">Vagas</span>'
+                   '<span class="text">Pontos</span>'
                    '</p>')
 
-    evento += ('<p  class="btn btn-primary btn-icon-split ml-1">'
-               '<span class="icon text-white-50">'
-               + momentoExecucao.strftime("%d/%m") +
-               '</span>'
-               '<span class="text">' + momentoExecucao.strftime("%H") + 'h</span>'
-                                                                        '</p>'
-                                                                        '</div>'
+        if (vagas > 0):
+            evento += ('<p  class="btn btn-warning btn-icon-split ml-1">'
+                       '<span class="icon text-white-50">'
+                       + str(vagas - inscricoes) +
+                       '</span>'
+                       '<span class="text">Vagas</span>'
+                       '</p>')
 
-                                                                        '<div class="mt-0">')
-    if (vagas > 0):
         evento += ('<p  class="btn btn-primary btn-icon-split ml-1">'
                    '<span class="icon text-white-50">'
-                   'Incrições até'
+                   + momentoExecucao.strftime("%d/%m") +
                    '</span>'
-                   '<span class="text">' + momentoFimInscricao.strftime("%d/%m") + '</span>'
-                                                                                   '</p>')
+                   '<span class="text">' + momentoExecucao.strftime("%H") + 'h</span>'
+                                                                            '</p>'
+                                                                            '</div>'
+    
+                                                                            '<div class="mt-0">')
+        if (vagas > 0):
+            evento += ('<p  class="btn btn-primary btn-icon-split ml-1">'
+                       '<span class="icon text-white-50">'
+                       'Incrições até'
+                       '</span>'
+                       '<span class="text">' + momentoFimInscricao.strftime("%d/%m") + '</span>'
+                                                                                       '</p>')
 
-    if (vagas > 0):
+        if (vagas > 0):
 
-        if (usuariosInscritos != None) and (usuarioAtivo in usuariosInscritos):
-            evento += ('<p  class="btn btn-success btn-icon-split ml-1" id="' + str(
-                eventoId) + '" onclick="postInscreverse(this)" >'
-                            '<span class="text">Inscrito</span>')
-        else:
-            evento += ('<p  class="btn btn-danger btn-icon-split ml-1" id="' + str(
-                eventoId) + '" onclick="postInscreverse(this)" >'
-                            '<span class="text">Inscrever-se</span>')
+            if (usuariosInscritos != None) and (usuarioAtivo in usuariosInscritos):
+                evento += ('<p  class="btn btn-success btn-icon-split ml-1" id="' + str(
+                    eventoId) + '" onclick="postInscreverse(this)" >'
+                                '<span class="text">Inscrito</span>')
+            else:
+                evento += ('<p  class="btn btn-danger btn-icon-split ml-1" id="' + str(
+                    eventoId) + '" onclick="postInscreverse(this)" >'
+                                '<span class="text">Inscrever-se</span>')
 
-    evento += ('</p>'
+        evento += ('</p>'
+    
+                   '</div>'
+                   '</div>'
+                   '</div>')
 
-               '</div>'
-               '</div>'
-               '</div>')
-
-    evento += ('<div class="modal-footer">'
-                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>'        
+        evento += ('<div class="modal-footer">'
+                        '<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>'        
+                      '</div>'
+                    '</div>'
                   '</div>'
-                '</div>'
-              '</div>'
-            '</div>')
+                '</div>')
 
     return Markup(evento)
 
