@@ -49,7 +49,7 @@ def criar_appPadrao():
     @login_required
     def logout():
         logout_user()
-        return redirect("/feed")
+        return redirect("/")
 
     # se der erro no login podemos fazer assim
     @app.errorhandler(401)

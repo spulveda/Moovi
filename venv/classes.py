@@ -15,7 +15,7 @@ class Usuario(UserMixin):
     imagem = ""
     administrador = ""
     
-    def __init__(self,_id = "",nome = "",email = "",senha = "",token = "",liberado = "",agenda = "",dataCadastro = "", imagem = "", administrador = ""):
+    def __init__(self,_id="",nome = "",email = "",senha = "",token = "",liberado = "",agenda = "",dataCadastro = "", imagem = "", administrador = ""):
         self._id = _id
         self.nome = nome
         self.email = email
@@ -31,7 +31,9 @@ class Usuario(UserMixin):
         return vars(self)
 
     def salvarMongoDb(self, db, coll="usuarios"):
-        db[coll].save(self.getJson())
+        dados = self.getJson()
+        del dados["_id"]
+        db[coll].save(dados)
 
     def fromJson(self,json):
         d = dict(json)
