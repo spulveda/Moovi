@@ -19,10 +19,17 @@ app = appPadrao.criar_appPadrao()
 def index():
     return render_template("indexDesktop.html")
 
-@app.route("/getUsuarios", methods=["GET"])
+@app.route("/admusuarios", methods=["GET"])
 @login_required
 def getLoadUsuarios():
     return wsUsuario.getLoadUsuarios()
+
+@app.route("/liberarBloquearUsuario", methods=["GET"])
+@login_required
+def postLiberarBloquearUsuario():
+    usuarioid = request.args.get('usuarioid', None)
+    if usuarioid != None:
+        return wsUsuario.liberarUsuario(usuarioid)
 
 if __name__ == "__main__":
     app.run(threaded=True, debug=True, host="0.0.0.0", port="5000")
