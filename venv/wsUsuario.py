@@ -8,6 +8,7 @@ import utilitariosDB
 from datetime import datetime
 import pymongo
 from bson.objectid import ObjectId
+from utils import getSideBar, getNavBar
 
 def getLoadUsuarios():
     usuarios = ""
@@ -55,7 +56,14 @@ def getLoadUsuarios():
                     '</div>'
                   '</div>')
 
-    return render_template("admUsuario.html", contentWS=Markup(usuarios))
+    sideBar = Markup(getSideBar())
+
+    usuarioAtivo = current_user.get_id()
+    db = utilitariosDB.getDb()
+    usuario = db['usuarios'].find_one({"_id": ObjectId(usuarioAtivo)})
+    navbar = Markup(getNavBar(usuario))
+
+    return render_template("admUsuario.html", contentWS=Markup(usuarios), sideBarWS=sideBar, navbarWS=navbar)
 
 def liberarUsuario(usuario):
     usuarioAtivo = current_user.get_id()

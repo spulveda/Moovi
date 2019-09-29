@@ -1,6 +1,6 @@
-var ultimoUsuarioClicado
-
-
+    <!-- Cadastro de usuário -->    
+    var ultimoUsuarioClicado
+    
     function updateCards(cards){        
         document.getElementById("divContainerPrincipal").innerHTML = cards;
           
@@ -22,5 +22,4 @@ var ultimoUsuarioClicado
         ultimoUsuarioClicado = ele.id
         $('#modalEditorUsuario').modal('show')
     };
-
 

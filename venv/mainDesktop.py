@@ -11,13 +11,21 @@ import agenda
 import wsEvento
 import wsFeed
 import wsUsuario
+from utils import getSideBar, getNavBar
 
 app = appPadrao.criar_appPadrao()
 
 @app.route("/", methods=["GET"])
 @login_required
 def index():
-    return render_template("indexDesktop.html")
+    sideBar = Markup(getSideBar())
+
+    usuarioAtivo = current_user.get_id()
+    db = utilitariosDB.getDb()
+    usuario = db['usuarios'].find_one({"_id": ObjectId(usuarioAtivo)})
+    navbar = Markup(getNavBar(usuario))
+
+    return render_template("indexDesktop.html", sideBarWS=sideBar, navbarWS=navbar)
 
 @app.route("/admusuarios", methods=["GET"])
 @login_required
@@ -30,6 +38,11 @@ def postLiberarBloquearUsuario():
     usuarioid = request.args.get('usuarioid', None)
     if usuarioid != None:
         return wsUsuario.liberarUsuario(usuarioid)
+
+@app.route("/dashDesktop", methods=["GET"])
+@login_required
+def getDashDesktop():
+    return "Ainda não implementado"
 
 if __name__ == "__main__":
     app.run(threaded=True, debug=True, host="0.0.0.0", port="5000")

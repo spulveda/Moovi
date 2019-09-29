@@ -1,7 +1,7 @@
  var activePage
 
- <!-- Inicio principal -->
-function onloadScroll(local){
+     <!-- Inicio principal -->
+    function onloadScroll(local){
         getNavBar();
         getOnLoadEventos();          
       };

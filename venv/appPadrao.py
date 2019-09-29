@@ -7,6 +7,7 @@ import appConfigPython
 import os
 import utilitariosDB
 from bson.objectid import ObjectId
+from utils import getNavBar
 
 def criar_appPadrao():
 
@@ -71,33 +72,10 @@ def criar_appPadrao():
         db = utilitariosDB.getDb()
         usuario = db['usuarios'].find_one({"_id": ObjectId(usuarioAtivo)})
 
-        usuario.get('imagem',"")
-
-        nav = ""
-
-        nav = ('<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">'
-                  '<a class="navbar-brand" href="/feed">MOOVI <sup>CNS</sup></a>'                    
-                  '<ul class="navbar-nav ml-auto">'                        
-                    '<div class="topbar-divider d-none d-sm-block"></div>'
-                    
-                    '<li class="nav-item dropdown no-arrow">'
-                      '<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-                        '<span class="mr-2 d-lg-inline text-gray-600 small">'+usuario.get('nome',"")+'</span>'
-                        '<img class="img-profile rounded-circle" src="'+usuario.get('imagem',"")+'">'
-                      '</a>'
-                      
-                      '<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">'                
-                        '<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">'
-                          '<i class="fas fa-sign-out-alt fa-sm fa-fw mr-0 text-gray-400"></i>'
-                          'Logout'
-                        '</a>'
-                      '</div>'
-                    '</li>'
-                  '</ul>'
-                '</nav>')
-
+        nav = getNavBar(usuario)
 
         return Markup(nav)
+
 
 
     return app
