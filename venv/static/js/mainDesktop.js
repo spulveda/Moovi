@@ -23,3 +23,16 @@
         $('#modalEditorUsuario').modal('show')
     };
 
+<!-- Adm Atividades -->
+    function editarEvento(ele){
+        var xmlHttp = new XMLHttpRequest();            
+        xmlHttp.onreadystatechange = function() { 
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                $('#'+ultimoUsuarioClicado).html(xmlHttp.responseText)
+        }
+        xmlHttp.open("GET", "/liberarBloquearUsuario?usuarioid="+ultimoUsuarioClicado, true); // true for asynchronous 
+        xmlHttp.send();            
+
+        $('#modalEditorUsuario').modal('toggle')
+        
+    }

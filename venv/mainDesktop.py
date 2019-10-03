@@ -11,6 +11,7 @@ import agenda
 import wsEvento
 import wsFeed
 import wsUsuario
+import wsAtividades
 from utils import getSideBar, getNavBar
 
 app = appPadrao.criar_appPadrao()
@@ -27,6 +28,7 @@ def index():
 
     return render_template("indexDesktop.html", sideBarWS=sideBar, navbarWS=navbar)
 
+#--   USUARIOS ---
 @app.route("/admusuarios", methods=["GET"])
 @login_required
 def getLoadUsuarios():
@@ -39,10 +41,17 @@ def postLiberarBloquearUsuario():
     if usuarioid != None:
         return wsUsuario.liberarUsuario(usuarioid)
 
+#--  DASH --
 @app.route("/dashDesktop", methods=["GET"])
 @login_required
 def getDashDesktop():
     return "Ainda não implementado"
+
+#-- ATIVIDADES --
+@app.route("/admatividades", methods=["GET"])
+@login_required
+def getLoadAtividades():
+    return wsAtividades.getLoadAtividades();
 
 if __name__ == "__main__":
     app.run(threaded=True, debug=True, host="0.0.0.0", port="5000")

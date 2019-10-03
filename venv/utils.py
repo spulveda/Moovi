@@ -51,7 +51,7 @@ def getSideBar():
                '<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">'
                '<div class="bg-white py-2 collapse-inner rounded">'
                '<a class="collapse-item" href="/admusuarios">Usuários</a>'
-               '<a class="collapse-item" href="cards.html">Atividades</a>'
+               '<a class="collapse-item" href="/admatividades">Atividades</a>'
                '<a class="collapse-item" href="cards.html">Ler e Assistir</a>'
                '<a class="collapse-item" href="cards.html">Moovi Quiz</a>'
                '<a class="collapse-item" href="cards.html">Feed</a>'
