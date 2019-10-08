@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Moovi - ADM</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this page -->
+  <link href="/static/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="/static/datetimepicker/jquery.datetimepicker.min.css"/>    
+
+  <link rel="stylesheet" type="text/css" href="/static/summernote/summernote-bs4.css"/>    
+    
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+    {{sideBarWS}}
+      
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+          {{navbarWS}}
+          
+        <!-- Begin Page Content -->
+        <div class="container-fluid" id="divContainerPrincipal">
+            <!-- Cards retornados por ws -->
+            <div class="card shadow-lg">
+                <div class="card-header">
+                  <p class="text-center mb-0">Cadastro de Evento</p>
+                </div>
+                <div class="card-body">
+                    <form method="post" >
+                      <div class="form-group">
+                          <input type="text" class="form-control mb-2" id="tTitulo" name="tTitulo" placeholder="Titulo..." required> 
+                          <input type="text" class="form-control mb-2" id="tLocal" name="tLocal" placeholder="Local..." >
+                          <input type="text" class="form-control mb-2" id="tPontos" name="tPontos" placeholder="Número de pontos..." required>
+                          <input type="text" class="form-control mb-2" id="tVagas" name="tVagas" placeholder="Número de vagas..." required>
+                          <input type="text" class="form-control mb-2 datetimepicker" id="tDataEvento" name="tDataEvento" placeholder="Data de realização do evento..." required>
+                          <input type="text" class="form-control mb-2 datetimepicker" id="tDataFimInscricao" name="tDataFimInscricao" placeholder="Fim das inscrições..." required>
+
+                            <div class="custom-file">
+                                <input type="file" name="customFile" class="custom-file-input form-control form-control-user  " id="customFile" accept='image/*'>
+                                <label class="custom-file-label" id="labelImagem" for="customFile">Inserir Imagem</label>
+                                <input type="hidden" id="fileBase64" name="fileBase64" value="" >
+                            </div>                                     
+                      </div>
+                      <div class="form-group">
+                        <div id="tDescricao" name="tDescricao" class="summernote">Descrição...</div>                          
+                        <br>  
+                        <label for="selCategoria">Categoria</label>
+                        <select class="form-control" id="selCategoria" name="selCategoria" required>
+                          <option>#Compartilha</option>
+                          <option>#Participa</option>
+                          <option>#Ação social</option>                                  
+                        </select>
+                      </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+                        </div>
+
+                    </form>                            
+            
+                </div>
+              </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Moovi 2019</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+    
+            
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="/static/vendor/jquery/jquery.min.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/static/js/sb-admin-2.min.js"></script>
+  
+    <!-- Page level plugins -->
+  <script src="/static/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="/static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="/static/js/demo/datatables-demo.js"></script>
+    
+  <!-- main script -->
+  <script src="/static/js/mainDesktop.js"></script>
+    
+  <!-- Time Picker -->
+  <script src="/static/datetimepicker/jquery.datetimepicker.min.js"></script>
+  <script src="/static/datetimepicker/jquery.datetimepicker.full.min.js"></script>
+  <script src="/static/datetimepicker/jquery.datetimepicker.full.js"></script>
+    
+  <script src="/static/summernote/summernote-bs4.js"></script>
+
+    
+    <script>
+        
+        $('.datetimepicker').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'pt',
+        disabledDates:['1986/01/08','1986/01/09','1986/01/10'],
+        startDate:	'2019/09/20'
+        });
+
+
+        <!-- Mostrar o nome do arquivo no input -->
+        $(".custom-file-input").on("change", function() {
+          var fileName = $(this).val().split("\\").pop();
+          $(this).siblings(".custom-file-label").addClass("selected").html(fileName);         
+        }); 
+
+        // convertendo imagem para base64
+        var input = document.querySelector('input[type=file]');
+
+        input.onchange = function () {
+          var file = input.files[0],
+            reader = new FileReader();
+
+          reader.onloadend = function () {        
+            var b64 = reader.result;
+            document.getElementById('fileBase64').value =b64;
+          };
+
+          reader.readAsDataURL(file);
+        };        
+
+        $(document).ready(function() {
+          $('.summernote').summernote();
+        });
+
+    </script>
+    
+</body>
+
+</html>

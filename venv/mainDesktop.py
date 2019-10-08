@@ -53,5 +53,24 @@ def getDashDesktop():
 def getLoadAtividades():
     return wsAtividades.getLoadAtividades();
 
+@app.route("/postPublicar", methods=["POST"])
+@login_required
+def postPublicar():
+    wsEvento.postPublicar()
+    return 'ok', 200
+
+@app.route("/postConcluir", methods=["POST"])
+@login_required
+def postConcluir():
+    wsEvento.postConcluir()
+    return 'ok', 200
+
+@app.route("/cadadmatividades", methods=["GET", "POST"])
+@login_required
+def cadAdmAtividades():
+    return wsAtividades.cadAdmAtividades()
+
+
+
 if __name__ == "__main__":
     app.run(threaded=True, debug=True, host="0.0.0.0", port="5000")

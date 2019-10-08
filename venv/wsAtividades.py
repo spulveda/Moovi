@@ -25,6 +25,9 @@ def getLoadAtividades():
     eventos += ('<div class="card shadow mb-4">'
             '<div class="card-header py-3">'
               '<h6 class="m-0 font-weight-bold text-primary">Administração de Usuários</h6>'
+                '<a href="/cadadmatividades">'
+                    '<button type="button" class="btn btn-primary float-right" >Cadastrar</button>'
+                '</a>'
             '</div>'
             '<div class="card-body">'
               '<div class="table-responsive">'
@@ -41,12 +44,14 @@ def getLoadAtividades():
                       '<th>Publicado</th>'
                       '<th>Concluído</th>'
                       '<th>Cadastro</th>'
+                      '<th>Publicar</th>'
+                      '<th>Concluir</th>'  
                     '</tr>'
                   '</thead>'
                   '<tbody>')
 
     for reg in evento:
-        eventos += ('<tr id="'+str(reg.get('_id'))+'" onclick="editarEvento(this)">'
+        eventos += ('<tr id="'+str(reg.get('_id'))+'">'
                       '<td>'+reg.get('titulo','')+'</td>'
                       '<td>'+reg.get('categoria','')+'</td>'                    
                       '<td>'+reg.get('momentoExecucao','').strftime("%d/%m/%y")+'</td>'
@@ -57,6 +62,9 @@ def getLoadAtividades():
                       '<td>'+reg.get('publicado','')+'</td>'
                       '<td>'+reg.get('concluido','')+'</td>'
                       '<td>'+reg.get('momentoCadastro','').strftime("%d/%m/%y")+'</td>'
+                      '<td> <button type="button" class="btn btn-primary" onclick="publicarEvento(this)">Publicar</button></td>'
+                      '<td><button type="button" class="btn btn-primary" onclick="concluirEvento(this)">Concluir</button></td>'
+                                                                               
                     '</tr>')
 
     eventos += ('</tbody>'
@@ -71,3 +79,49 @@ def getLoadAtividades():
     navbar = Markup(getNavBar(usuario))
 
     return render_template("admUsuario.html", contentWS=Markup(eventos), sideBarWS=sideBar, navbarWS=navbar)
+
+
+def cadAdmAtividades():
+    if request.method == 'GET':
+        usuarioAtivo = current_user.get_id()
+
+        db = utilitariosDB.getDb()
+        sideBar = Markup(getSideBar())
+
+        usuario = db['usuarios'].find_one({"_id": ObjectId(usuarioAtivo), "administrador": "S"})
+        if usuario == None:
+            return "usuários não autorizado"
+
+        navbar = Markup(getNavBar(usuario))
+
+        return render_template("cadastarAtividadesDesktop.html", sideBarWS=sideBar, navbarWS=navbar)
+
+    if request.method == 'POST':
+        evento = Evento()
+
+        evento.titulo = request.form.get("tTitulo", '')
+        evento.categoria = request.form.get("selCategoria", '')
+        evento.descricao = request.form.get("tDescricao", '')
+        evento.imagem = request.form.get("fileBase64", '')
+        evento.momentoExecucao = request.form.get("tDataEvento", None)
+        evento.local = request.form.get("tLocal", '')
+        evento.pontos = int(request.form.get("tPontos", 0))
+        evento.vagas = int(request.form.get("tVagas", 0))
+        evento.inscricoes = 0
+        evento.usuariosInscritos = []
+        evento.publicado = "N"
+        evento.momentoFimInscricao = request.form.get("tDataFimInscricao", None)
+        evento.momentoCadastro = datetime.now()
+        evento.concluido = "N"
+
+        if not evento.momentoExecucao == None:
+            evento.momentoExecucao = datetime.strptime(evento.momentoExecucao, "%Y/%m/%d %H:%M")
+
+        if not evento.momentoFimInscricao == None:
+            evento.momentoFimInscricao = datetime.strptime(evento.momentoFimInscricao, "%Y/%m/%d %H:%M")
+
+        # Salvando no banco
+        db = utilitariosDB.getDb()
+        evento.salvarMongoDb(db)
+
+        return redirect('/atividades')
