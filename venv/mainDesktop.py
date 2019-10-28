@@ -48,6 +48,11 @@ def getDashDesktop():
     return "Ainda não implementado"
 
 #-- ATIVIDADES --
+@app.route("/admfeedback", methods=["GET"])
+@login_required
+def getAdmFeedBack():
+    return wsAtividades.getAdmFeedBack();
+
 @app.route("/admatividades", methods=["GET"])
 @login_required
 def getLoadAtividades():
@@ -70,6 +75,10 @@ def postConcluir():
 def cadAdmAtividades():
     return wsAtividades.cadAdmAtividades()
 
+@app.route("/admfeed", methods=["GET","POST"])
+@login_required
+def admFeed():
+    return wsFeed.admFeed()
 
 
 if __name__ == "__main__":

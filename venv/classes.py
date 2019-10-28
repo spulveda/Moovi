@@ -59,6 +59,9 @@ class Evento:
     momentoFimInscricao = None
     momentoCadastro = None
     concluido = None
+    feedBackTipo = None
+    usuariosFeedBack = None
+    usuariosFeedBackOk = None
 
     def __init__(self):
        pass
@@ -67,6 +70,28 @@ class Evento:
         return vars(self)
 
     def salvarMongoDb(self, db, coll="evento"):
+        db[coll].save(self.getJson())
+
+    def fromJson(self,json):
+        d = dict(json)
+        for k, v in d.items():
+            setattr(self, k, v)
+
+class EventoFeedBack(object):
+    _id = None
+    feedBackTipo = None
+    feedBack = None
+    evento = Evento
+    usuario = Usuario
+    status = None
+
+    def __init__(self):
+       pass
+
+    def getJson(self):
+        return vars(self)
+
+    def salvarMongoDb(self, db, coll="eventoFeedBack"):
         db[coll].save(self.getJson())
 
     def fromJson(self,json):

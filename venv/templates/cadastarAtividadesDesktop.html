@@ -66,11 +66,24 @@
                       <div class="form-group">
                         <div id="tDescricao" name="tDescricao" class="summernote">Descrição...</div>                          
                         <br>  
+                        <label for="selCategoria">Tipo de FeedBack</label>
+                        <select class="form-control" id="selFeedBack" name="selFeedBack" required>
+                          <option>Nenhum</option>
+                          <option>Texto</option>
+                          <option>Mídia</option>                                  
+                          <option>Quiz</option>                                  
+                        </select>
+                        <div id="divFeedBack" >
+                          
+                        </div>  
+                        <br>  
                         <label for="selCategoria">Categoria</label>
                         <select class="form-control" id="selCategoria" name="selCategoria" required>
                           <option>#Compartilha</option>
                           <option>#Participa</option>
                           <option>#Ação social</option>                                  
+                          <option>#Ler e assistir</option>                                  
+                          <option>#Moovi Quiz</option>                                  
                         </select>
                       </div>
                         <div>

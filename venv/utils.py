@@ -27,11 +27,12 @@ def getSideBar():
                '<!-- Divider -->'
                '<hr class="sidebar-divider my-0">'
 
-               '<!-- Nav Item - Dashboard -->'
+               '<!-- Nav Item - adm feedback -->'
                '<li class="nav-item active">'
-               '<a class="nav-link" href="/dashDesktop">'
+               '<a class="nav-link" href="/admfeedback">'
                '<i class="fas fa-fw fa-tachometer-alt"></i>'
-               '<span>Dashboard</span></a>'
+               '<span>FeedBacks</span></a>'
+
                '</li>'
 
                '<!-- Divider -->'
@@ -52,9 +53,7 @@ def getSideBar():
                '<div class="bg-white py-2 collapse-inner rounded">'
                '<a class="collapse-item" href="/admusuarios">Usuários</a>'
                '<a class="collapse-item" href="/admatividades">Atividades</a>'
-               '<a class="collapse-item" href="cards.html">Ler e Assistir</a>'
-               '<a class="collapse-item" href="cards.html">Moovi Quiz</a>'
-               '<a class="collapse-item" href="cards.html">Feed</a>'
+               '<a class="collapse-item" href="/admfeed">Feed</a>'
                '</div>'
                '</div>'
                '</li>'

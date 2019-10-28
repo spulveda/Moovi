@@ -50,6 +50,12 @@ def postPublicar():
 def getAgenda():
     return agenda.getAgenda()
 
+@app.route("/concluirAtividade", methods=["POST"])
+@login_required
+def concluirAtividades():
+    return agenda.concluirAtividade()
+
+
 # ----------    Inicio da agenda  --------------#
 @app.route('/feedLoad', methods=['GET'])
 @login_required
@@ -70,6 +76,7 @@ def getComentario():
 @login_required
 def postComentario():
     return wsFeed.postComentario()
+
 
 if __name__ == "__main__":
     app.run(threaded=True, debug=True, host="0.0.0.0", port="5000")

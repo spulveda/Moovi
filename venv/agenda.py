@@ -1,6 +1,6 @@
 import appPadrao
 from flask_login import UserMixin, current_user
-from classes import Usuario, Evento
+from classes import Usuario, Evento, EventoFeedBack
 from flask import *
 from flask_login import LoginManager, login_required, login_user, logout_user
 import utilitariosDB
@@ -11,12 +11,53 @@ from bson.objectid import ObjectId
 app = appPadrao.criar_appPadrao()
 
 
+def concluirAtividade():
+    cont = json.loads(request.data.decode('utf-8'))
+    eventoId = cont.get('eventoid','')
+    usuario = current_user.get_id()
+
+    db = utilitariosDB.getDb()
+
+    usuarioCompleto = db['usuarios'].find_one({"_id": ObjectId(usuario)})
+
+    #Gravando que o usuário já deu feedback no evento
+    evento = db['evento'].find_one({"_id":ObjectId(eventoId)})
+
+    usuFeedBack = evento.get("usuariosFeedBack",None)
+
+    gravou = False;
+    if (usuFeedBack == None):
+        usuFeedBack = [usuario]
+        evento["usuariosFeedBack"] = usuFeedBack
+        db['evento'].save(evento)
+        gravou = True
+    else:
+
+        usuFeedBack = list(usuFeedBack)
+        if usuario not in usuFeedBack:
+            usuFeedBack.append(usuario)
+            evento["usuariosFeedBack"] = usuFeedBack
+            db['evento'].save(evento)
+            gravou = True
+
+
+    #gravando o feedback do usuário
+    if gravou:
+        eventoFeedBack = EventoFeedBack()
+        eventoFeedBack.evento = evento
+        eventoFeedBack.feedBackTipo = evento.get('feedBackTipo','')
+        eventoFeedBack.feedback = cont.get('feedBack','')
+        eventoFeedBack.usuario = usuarioCompleto
+        eventoFeedBack.status = "novo"
+        eventoFeedBack.salvarMongoDb(db)
+
+    return 'ok', 200
+
 @app.route('/agenda', methods=['GET'])
 @login_required
-def evento():
+def agenda():
 
     return render_template('agenda.html')
-
 
 @app.route('/getAgenda', methods=['GET'])
 @login_required
@@ -24,7 +65,7 @@ def getAgenda():
     usuarioAtivo = current_user.get_id()
 
     db = utilitariosDB.getDb()
-    eventos = db['evento'].find({"concluido": "N","usuariosInscritos":usuarioAtivo}).sort([("momentoExecucao", pymongo.DESCENDING)])
+    eventos = db['evento'].find({"concluido": "N","usuariosInscritos":usuarioAtivo, "usuariosFeedBack":{"$nin":[usuarioAtivo]}}).sort([("momentoExecucao", pymongo.DESCENDING)])
 
     evento = ''
     for reg in eventos:
@@ -46,7 +87,7 @@ def getAgenda():
 
         descricao = "<br />".join(descricao.split("\n"))
 
-        evento += ('<div data-toggle="modal" data-target="#eventoModal'+str(eventoId)+'" class="col-xl-3 col-md-6 mb-4">'
+        evento += ('<div  class="col-xl-3 col-md-6 mb-4">'
               '<div class="card border-left-primary shadow h-100 py-2">'
                 '<div class="card-body">'
                   '<div class="row no-gutters align-items-center">'
@@ -55,7 +96,8 @@ def getAgenda():
                       '<div class="h5 mb-0 font-weight-bold text-gray-800">'+momentoExecucao.strftime("%d/%m as %H horas")+'</div>'
                     '</div>'
                     '<div class="col-auto">'
-                      '<i class="fas fa-calendar fa-2x text-gray-300"></i>'
+                      '<i class="fas fa-calendar fa-2x text-primary mr-1" data-toggle="modal" data-target="#eventoModal'+str(eventoId)+'"></i>'
+                      '<i class="fas fa-check fa-2x text-success" id="'+str(eventoId)+'" onclick="concluirAtividade(this)"></i>'                                                                                                                  
                     '</div>'
                   '</div>'
                 '</div>'

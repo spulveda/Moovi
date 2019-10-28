@@ -7,6 +7,7 @@ import utilitariosDB
 from datetime import datetime
 import pymongo
 from bson.objectid import ObjectId
+from utils import getSideBar, getNavBar
 
 app = appPadrao.criar_appPadrao()
 
@@ -163,6 +164,34 @@ def postComentario():
 
     return '', 200
 
+def admFeed():
+    usuarioAtivo = current_user.get_id()
+
+    db = utilitariosDB.getDb()
+    sideBar = Markup(getSideBar())
+
+    usuario = db['usuarios'].find_one({"_id": ObjectId(usuarioAtivo), "administrador": "S"})
+    if usuario == None:
+        return "usuários não autorizado"
+
+    navbar = Markup(getNavBar(usuario))
+
+
+
+    if request.method == 'POST':
+
+        post = Post()
+        post.titulo = request.form.get("feedInTitulo",'')
+        post.descricao = request.form.get("feedInMensagem",'')
+        post.momento = datetime.now()
+
+        # Salvando no banco
+        db = utilitariosDB.getDb()
+        post.salvarMongoDb(db)
+
+        return render_template("admFeed.html", sideBarWS=sideBar, navbarWS=navbar)
+    else:
+        return render_template("admFeed.html", sideBarWS=sideBar, navbarWS=navbar)
 
 
 if __name__ == "__main__":

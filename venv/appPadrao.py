@@ -7,7 +7,7 @@ import appConfigPython
 import os
 import utilitariosDB
 from bson.objectid import ObjectId
-from utils import getNavBar
+import utils
 
 def criar_appPadrao():
 
@@ -72,7 +72,7 @@ def criar_appPadrao():
         db = utilitariosDB.getDb()
         usuario = db['usuarios'].find_one({"_id": ObjectId(usuarioAtivo)})
 
-        nav = getNavBar(usuario)
+        nav = utils.getNavBar(usuario)
 
         return Markup(nav)
 
